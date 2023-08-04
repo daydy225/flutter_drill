@@ -2,7 +2,11 @@ name: Demo App Android Release
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+
+env:
+  APP_VERSION: ${{ secrets.APP_VERSION }}
 
 jobs:
   version:
@@ -55,6 +59,9 @@ jobs:
         id: version
         run: |
           echo "APP_VERSION=$(cat version.txt)" >> $GITHUB_ENV
+
+      - name: Set APP_VERSION from .env
+        run: echo "APP_VERSION=$(cat .env)" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: flutter pub get
